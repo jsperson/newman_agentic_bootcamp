@@ -1,0 +1,5 @@
+SimpleFastPyAPI/venv/
+SimpleFastPyAPI/__pycache__/
+SimpleFastPyAPI/app/__pycache__/
+SimpleFastPyAPI/.env
+SimpleFastPyAPI/users.db
