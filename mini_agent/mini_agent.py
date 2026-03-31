@@ -274,7 +274,7 @@ def main():
         run_agent(user_prompt, session_id, is_first_prompt=True)
     else:
         # Interactive REPL
-        print("Mini Agent v0.5 (type /exit to quit)")
+        print("Mini Agent v0.6 (type /exit to quit)")
         print("-" * 40)
         first = True
         while True:
