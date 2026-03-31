@@ -14,6 +14,7 @@ import json
 import os
 import subprocess
 import sys
+import uuid
 
 # ---------------------------------------------------------------------------
 # System prompt - teaches Claude our tool-calling protocol
@@ -115,7 +116,7 @@ TOOLS = {
 # ---------------------------------------------------------------------------
 
 
-def call_claude(prompt, session_id=None, system_prompt=None):
+def call_claude(prompt, session_id, system_prompt=None):
     """Call Claude Code in non-interactive mode and return parsed JSON."""
 
     cmd = [
@@ -123,13 +124,8 @@ def call_claude(prompt, session_id=None, system_prompt=None):
         "-p", prompt,
         "--output-format", "json",
         "--tools", "",            # disable all built-in tools
-        "--no-session-persistence" if not session_id else None,
+        "--session-id", session_id,
     ]
-    # Clean out None entries
-    cmd = [c for c in cmd if c is not None]
-
-    if session_id:
-        cmd += ["--resume", session_id]
 
     if system_prompt:
         cmd += ["--system-prompt", system_prompt]
@@ -210,7 +206,7 @@ MAX_TOOL_CALLS = 20  # safety limit
 def run_agent(user_prompt):
     """Run the agent loop: prompt -> tool calls -> final response."""
 
-    session_id = None
+    session_id = str(uuid.uuid4())
     prompt = user_prompt
     tool_calls = 0
 
@@ -221,10 +217,9 @@ def run_agent(user_prompt):
         response = call_claude(
             prompt,
             session_id=session_id,
-            system_prompt=SYSTEM_PROMPT if session_id is None else None,
+            system_prompt=SYSTEM_PROMPT if tool_calls == 0 else None,
         )
 
-        session_id = response.get("session_id")
         text = response.get("result", "")
 
         # Check for a tool call
