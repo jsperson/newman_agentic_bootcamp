@@ -263,7 +263,7 @@ def main():
         run_agent(user_prompt)
     else:
         # Interactive REPL
-        print("Mini Agent v0.3 (type /exit to quit)")
+        print("Mini Agent v0.4 (type /exit to quit)")
         print("-" * 40)
         session_id = None
         while True:
