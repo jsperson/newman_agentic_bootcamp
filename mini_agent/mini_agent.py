@@ -116,7 +116,7 @@ TOOLS = {
 # ---------------------------------------------------------------------------
 
 
-def call_claude(prompt, session_id, system_prompt=None):
+def call_claude(prompt, session_id, resume=False, system_prompt=None):
     """Call Claude Code in non-interactive mode and return parsed JSON."""
 
     cmd = [
@@ -126,6 +126,9 @@ def call_claude(prompt, session_id, system_prompt=None):
         "--tools", "",            # disable all built-in tools
         "--session-id", session_id,
     ]
+
+    if resume:
+        cmd += ["--resume", session_id]
 
     if system_prompt:
         cmd += ["--system-prompt", system_prompt]
@@ -213,12 +216,15 @@ def run_agent(user_prompt, session_id, is_first_prompt=False):
 
     while True:
         # Send system prompt only on the very first call of the session
+        # Resume on all calls except the very first one
         send_system = SYSTEM_PROMPT if (is_first_prompt and tool_calls == 0) else None
+        should_resume = not (is_first_prompt and tool_calls == 0)
 
         # Call Claude Code
         response = call_claude(
             prompt,
             session_id=session_id,
+            resume=should_resume,
             system_prompt=send_system,
         )
 
