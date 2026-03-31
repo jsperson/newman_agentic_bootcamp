@@ -22,7 +22,7 @@ import uuid
 
 SYSTEM_PROMPT = """You are a coding agent that helps users read, understand, and edit code.
 
-You have access to tools to interact with the local filesystem. Use them as needed to accomplish the user's task.
+You ONLY have access to the three tools listed below. You cannot run scripts, execute commands, access the internet, or do anything other than use these three tools. If the user asks for something that requires capabilities beyond these tools, say so.
 
 ## Tool calling protocol
 
