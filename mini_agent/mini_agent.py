@@ -132,7 +132,7 @@ def call_claude(prompt, session_id, resume=False, system_prompt=None):
         cmd += ["--session-id", session_id]
 
     if system_prompt:
-        cmd += ["--system-prompt", system_prompt]
+        cmd += ["--append-system-prompt", system_prompt]
 
     result = subprocess.run(cmd, capture_output=True, text=True)
 
@@ -275,7 +275,7 @@ def main():
         # Interactive REPL
         print()
         print("  ┌───────────────────────────┐")
-        print("  │  Mini Agent  v0.8         │")
+        print("  │  Mini Agent  v0.9         │")
         print("  │  LLM + Loop + Tools       │")
         print("  │  /exit to quit            │")
         print("  └───────────────────────────┘")
