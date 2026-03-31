@@ -203,21 +203,23 @@ def execute_tool(name, inp):
 MAX_TOOL_CALLS = 20  # safety limit
 
 
-def run_agent(user_prompt):
+def run_agent(user_prompt, session_id, is_first_prompt=False):
     """Run the agent loop: prompt -> tool calls -> final response."""
 
-    session_id = str(uuid.uuid4())
     prompt = user_prompt
     tool_calls = 0
 
     print()  # blank line before agent output
 
     while True:
+        # Send system prompt only on the very first call of the session
+        send_system = SYSTEM_PROMPT if (is_first_prompt and tool_calls == 0) else None
+
         # Call Claude Code
         response = call_claude(
             prompt,
             session_id=session_id,
-            system_prompt=SYSTEM_PROMPT if tool_calls == 0 else None,
+            system_prompt=send_system,
         )
 
         text = response.get("result", "")
@@ -257,15 +259,17 @@ def run_agent(user_prompt):
 
 
 def main():
+    session_id = str(uuid.uuid4())
+
     if len(sys.argv) > 1:
         # Single-shot: pass prompt as argument
         user_prompt = " ".join(sys.argv[1:])
-        run_agent(user_prompt)
+        run_agent(user_prompt, session_id, is_first_prompt=True)
     else:
         # Interactive REPL
-        print("Mini Agent v0.4 (type /exit to quit)")
+        print("Mini Agent v0.5 (type /exit to quit)")
         print("-" * 40)
-        session_id = None
+        first = True
         while True:
             try:
                 user_input = input("\nYou: ").strip()
@@ -279,7 +283,8 @@ def main():
                 print("Bye.")
                 break
 
-            run_agent(user_input)
+            run_agent(user_input, session_id, is_first_prompt=first)
+            first = False
 
 
 if __name__ == "__main__":
