@@ -275,7 +275,7 @@ def main():
         # Interactive REPL
         print()
         print("  ┌───────────────────────────┐")
-        print("  │  Mini Agent  v0.7         │")
+        print("  │  Mini Agent  v0.8         │")
         print("  │  LLM + Loop + Tools       │")
         print("  │  /exit to quit            │")
         print("  └───────────────────────────┘")
