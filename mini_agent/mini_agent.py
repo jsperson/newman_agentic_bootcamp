@@ -214,7 +214,7 @@ def run_agent(user_prompt):
     prompt = user_prompt
     tool_calls = 0
 
-    print(f"\nYou: {user_prompt}\n")
+    print()  # blank line before agent output
 
     while True:
         # Call Claude Code
