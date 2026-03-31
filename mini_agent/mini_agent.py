@@ -216,9 +216,8 @@ def run_agent(user_prompt, session_id, is_first_prompt=False):
     print()  # blank line before agent output
 
     while True:
-        # Send system prompt only on the very first call of the session
+        # Always send system prompt to override Claude Code's defaults
         # Resume on all calls except the very first one
-        send_system = SYSTEM_PROMPT if (is_first_prompt and tool_calls == 0) else None
         should_resume = not (is_first_prompt and tool_calls == 0)
 
         # Call Claude Code
@@ -226,7 +225,7 @@ def run_agent(user_prompt, session_id, is_first_prompt=False):
             prompt,
             session_id=session_id,
             resume=should_resume,
-            system_prompt=send_system,
+            system_prompt=SYSTEM_PROMPT,
         )
 
         text = response.get("result", "")
