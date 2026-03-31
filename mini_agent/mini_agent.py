@@ -124,11 +124,12 @@ def call_claude(prompt, session_id, resume=False, system_prompt=None):
         "-p", prompt,
         "--output-format", "json",
         "--tools", "",            # disable all built-in tools
-        "--session-id", session_id,
     ]
 
     if resume:
         cmd += ["--resume", session_id]
+    else:
+        cmd += ["--session-id", session_id]
 
     if system_prompt:
         cmd += ["--system-prompt", system_prompt]
